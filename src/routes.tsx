@@ -30,6 +30,8 @@ createRoot(document.getElementById('root')!).render(
                 </Routes>
             </BrowserRouter>
         </div>
-        <div id="taskbar"></div>
+        <div id="taskbar">
+            <div className='is-flex flex-center-ver flex-center-hor' id="start">Start</div>
+        </div>
     </div>
 )
