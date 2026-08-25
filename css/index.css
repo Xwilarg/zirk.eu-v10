@@ -52,6 +52,10 @@ body {
     align-items: center;
 }
 
+.text-center {
+    text-align: center;
+}
+
 .container {
     display: block;
     width: 80%;
@@ -70,8 +74,8 @@ body {
 }
 
 .box {
-    width: 200px;
-    height: 200px;
+    width: 400px;
+    height: 500px;
 }
 
 /* Links */
@@ -97,6 +101,36 @@ a.ignore-half {
     cursor: pointer;
 }
 
+/* Image effects */
+.blur {
+    filter: blur(20px);
+    pointer-events: none;
+}
+
+/* Box */
+.box-name {
+    height: 20px;
+}
+
+.box-img {
+    height: 400px;
+    width: 400px;
+    overflow: hidden;
+    border-radius: var(--border-radius);
+}
+.box-img img {
+    min-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-position: center;
+    object-fit: cover;
+}
+.box-img.top img { object-position: top; }
+.box-img.bottom img { object-position: bottom; }
+.box-img.left img { object-position: left; }
+.box-img.right img { object-position: right; }
+
 /* Quote */
 #intro-quote-container {
     display: block;
@@ -118,4 +152,22 @@ a.ignore-half {
 
     font-size: 13px;
     z-index: 1;
+}
+
+.svg-quote-icon {
+  display: inline-block;
+  height: 20px;
+  vertical-align: -5px;
+}
+
+.svg-quote-icon > object{
+  height: 100%;
+  display: block;
+}
+
+/* Secrets */
+.secret-quote {
+    text-align: center;
+    font-size: 50px;
+    margin-top: 100px;
 }
