@@ -1,8 +1,9 @@
 import { createRoot } from 'react-dom/client'
-import MainForm from './form/MainForm'
+import MainForm from './forms/MainForm'
 import "../css/index.css"
 import { BrowserRouter, Route, Routes, useLocation, useNavigate, useSearchParams } from 'react-router'
 import { useEffect } from 'react'
+import SecretQuoteForm from './forms/secrets/SecretQuoteForm'
 
 function RedirectCompat()
 {
@@ -24,6 +25,7 @@ createRoot(document.getElementById('root')!).render(
         <RedirectCompat />
         <Routes>
             <Route path='/' element={<MainForm/>} />
+            <Route path='/secret/quote' element={<SecretQuoteForm />} />
         </Routes>
     </BrowserRouter>
 )

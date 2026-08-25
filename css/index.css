@@ -51,3 +51,71 @@ body {
 .flex-center-ver {
     align-items: center;
 }
+
+.container {
+    display: block;
+    width: 80%;
+    margin: 0 auto;
+
+    box-sizing: border-box;
+    padding: 5px;
+    margin-bottom: 15px;
+
+    overflow: hidden;
+}
+@media (max-width: 1000px) {
+    .container {
+        width: 100%;
+    }
+}
+
+.box {
+    width: 200px;
+    height: 200px;
+}
+
+/* Links */
+a:not(.ignore):not(.ignore-half):not(.nav-button) {
+    color: rgb(212, 117, 117);
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    cursor: pointer;
+}
+a:hover:not(.ignore):not(.ignore-half):not(.nav-button) {
+    color: rgb(117, 166, 212);
+    text-decoration: none;
+}
+a.ignore {
+    text-decoration: none;
+    color: var(--primary-light);
+    cursor: default;
+}
+a.ignore-half {
+    color: var(--primary-light);
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    cursor: pointer;
+}
+
+/* Quote */
+#intro-quote-container {
+    display: block;
+    width: 1000px;
+    margin: 0 auto;
+    height: 30px;
+
+    position: relative;
+}
+@media (max-width: 1000px) {
+    #intro-quote-container {
+        width: 100%;
+    }
+}
+#intro-quote {
+    position: absolute;
+    top: -12px;
+    right: 5px;
+
+    font-size: 13px;
+    z-index: 1;
+}
