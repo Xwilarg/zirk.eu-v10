@@ -37,7 +37,7 @@ export default function MainForm() {
         </p>
         <h1>What can I see in the meantime?</h1>
         <p>
-            Yes! <Link to={getNavigationNoHook("/gamejam", searchParams)} rel="me">Sample gamejam page</Link> is up!
+            <Link to={getNavigationNoHook("/gamejam", searchParams)} rel="me">Sample gamejam page</Link> is up!
         </p>
         <h1>Anything else?</h1>
         <p>

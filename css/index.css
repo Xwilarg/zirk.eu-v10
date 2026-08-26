@@ -110,10 +110,14 @@ a.ignore-half {
 /* Box */
 .box-name {
     height: 20px;
+    width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
 }
 
 .box-img {
-    height: 400px;
+    height: calc(400px / 1.26); /* itch.io thumbnail aspect ratio */
     width: 400px;
     overflow: hidden;
     border-radius: var(--border-radius);
