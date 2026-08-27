@@ -224,15 +224,16 @@ a.ignore-half {
 }
 
 #screen-container {
-    width: 2000px;
-    height: 1124px;
+    width: min(2000px, calc(100vh * 16 / 9 - 50px));
+    aspect-ratio: 16 / 9;
     position: relative;
     background-color: var(--primary-background);
     margin-bottom: 10px;
 }
 @media (max-width: 1000px) {
-    #intro-quote-container {
+    #screen-container {
         width: 100%;
+        height: calc(100% / 1.77);
     }
 }
 
@@ -247,10 +248,6 @@ a.ignore-half {
     border: none;
     width: 100%;
     height: 650px;
-}
-
-#screen-container.fullscreen {
-    height: 1000px;
 }
 
 /* Quote */
