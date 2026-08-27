@@ -29,7 +29,7 @@ export default function MainForm() {
     const [searchParams] = useSearchParams();
     const [index, setIndex] = useState(randInt(links.length));
 
-    return <div className="container">
+    return <div>
         <QuoteComponent />
         <h1>Ohno what happened to everything?</h1>
         <p>

@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import SecretQuoteForm from './forms/secrets/SecretQuoteForm'
 import GameJamForm from './forms/GameJamForm'
 import { getNavigationNoHook } from './utils'
+import GameForm from './forms/GameForm.tsx'
 
 function RedirectCompat()
 {
@@ -28,6 +29,7 @@ createRoot(document.getElementById('root')!).render(
         <Routes>
             <Route path='/' element={<MainForm/>} />
             <Route path='/gamejam' element={<GameJamForm/>} />
+            <Route path='/game' element={<GameForm/>} />
             <Route path='/secret/quote' element={<SecretQuoteForm />} />
         </Routes>
     </BrowserRouter>

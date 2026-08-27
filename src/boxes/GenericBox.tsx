@@ -16,11 +16,12 @@ interface GenericBoxProps
 
     buttons?: Button[]
 
+    onClick?: React.MouseEventHandler<HTMLImageElement> | undefined
     onMouseEnter?: React.MouseEventHandler<HTMLImageElement> | undefined
     onMouseLeave?: React.MouseEventHandler<HTMLImageElement> | undefined
 }
 
-export default function GenericBox({ name, text, image, nsfw, buttons, imageCssModifiers, onMouseEnter, onMouseLeave } : GenericBoxProps) {
+export default function GenericBox({ name, text, image, nsfw, buttons, imageCssModifiers, onClick, onMouseEnter, onMouseLeave } : GenericBoxProps) {
     let nsfwStatus = isNsfw();
     let hideNsfw = nsfw && nsfwStatus !== "NSFW";
 
@@ -40,14 +41,15 @@ export default function GenericBox({ name, text, image, nsfw, buttons, imageCssM
         }
     }
 
-    return <div className="card" id={`card-${name}`}>
+    return <div className="card">
         <p className={"text-center card-name"}>{hideNsfw ? "" : name}</p>
         {
             image ?
             <div className={"card-img is-flex flex-center-hor " + imageCssModifiers}>
-                <img className={hideNsfw && image !== null  ? "blur" : ""} src={image === null ? "/img/ComingSoon.png" : image}
+                <img className={(hideNsfw && image !== null ? "blur" : (onClick ? "clickable" : ""))} src={image === null ? "/img/ComingSoon.png" : image}
                     onMouseEnter={onMouseEnter}
                     onMouseLeave={onMouseLeave}
+                    onClick={onClick}
                 />
             </div>
             : <p className="card-text" dangerouslySetInnerHTML={{ __html: text! }}></p>
