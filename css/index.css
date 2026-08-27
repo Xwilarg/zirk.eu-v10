@@ -54,6 +54,9 @@ body {
 .flex-columns {
     flex-direction: column;
 }
+.flex-break {
+    flex-basis: 100%;
+}
 
 .text-center {
     text-align: center;

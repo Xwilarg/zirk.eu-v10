@@ -1,5 +1,5 @@
 import { isNsfw } from "../utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { GameJamItem } from "../models/Gamejam";
 
 type SortMode = "Date" | "Score" | "Duration";
@@ -30,50 +30,16 @@ function toggleArrayElement(array: any[], element: any) {
     return [...array, element];
 }
 
-function getSortedGamejams(items: GameJamItem[], sortMode: SortMode, teamSize: TeamSize[] | null, jamDuration: JamDuration[] | null, jamSFW: JamSFW[] | null, engines: Engine[] | null, countries: Country[] | null, teammates: string[] | null): GameJamItem[]
+interface GameJamFiltersComponentProps
 {
-    if (!jamSFW) {
-        const nsfwStatus = isNsfw();
-        if (nsfwStatus === "FullSFW") jamSFW = [ "SFW" ];
-        else jamSFW = [ "SFW", "NSFW" ];
-    }
-    return items
-    .filter(x => (!x.nsfw && jamSFW.includes("SFW")) || (x.nsfw && jamSFW.includes("NSFW")))
-    .filter(x => !engines || engines.includes(x.engine as Engine))
-    .filter(x => !countries || countries.includes(x.location.split(", ").at(-1) as Country))
-    .filter(x => !teamSize || (x.team.length === 1 && teamSize.includes("Solo")) || (x.team.length > 1 && teamSize.includes("Group")))
-    .filter(x => !jamDuration ||
-        (x.duration <= 1 && jamDuration.includes("1H")) ||
-        (x.duration > 1 && x.duration <= 24 && jamDuration.includes("1D")) ||
-        (x.duration > 24 && x.duration <= 74 && jamDuration.includes("3D")) ||
-        (x.duration > 74 && x.duration <= 240 && jamDuration.includes("9D")) ||
-        (x.duration > 240 && x.duration <= 768 && jamDuration.includes("1M")) ||
-        (x.duration > 768 && jamDuration.includes("More"))
-    )
-    .filter(x => !teammates ||
-        teammates.every(t => x.team.includes(t))
-    )
-    .sort((a, b) => {
-        if (sortMode === "Score")
-        {
-            const sa = getOverallScore(a);
-            const sb = getOverallScore(b)
-
-            if (sa === null) return 1;
-            if (sb === null) return -1;
-
-            return sa - sb;
-        }
-        else if (sortMode === "Duration")
-        {
-            return b.duration - a.duration;
-        }
-        return 0;
-    });
+    items: GameJamItem[]
+    setJamItems: React.Dispatch<React.SetStateAction<GameJamItem[]>>
 }
 
-export default function GameJamFiltersComponent() {
+export default function GameJamFiltersComponent({items, setJamItems}: GameJamFiltersComponentProps) {
     const nsfw = isNsfw();
+
+    const [showFilters, setShowFilters] = useState<boolean>(false);
 
     const [sortMode, setSortMode] = useState<SortMode>("Date");
     const [teamSize, setTeamSize] = useState<TeamSize[]>(["Solo", "Group"]);
@@ -82,6 +48,52 @@ export default function GameJamFiltersComponent() {
     const [engines, setEngines] = useState<Engine[]>(["Unity", "Godot", "Unreal Engine", "Scratch", "GB Studio", "DirectX", "PVSnesLib"]);
     const [countries, setCountries] = useState<Country[]>(["Online", "Canada", "United Kingdom", "Sweden", "France", "Japan", "Denmark"])
     const [teammates, setTeammates] = useState<string[]>([])
+    
+    useEffect(() => {
+        let jamSFW: Array<string>;
+        if (!sfw) {
+            const nsfwStatus = isNsfw();
+            if (nsfwStatus === "FullSFW") jamSFW = [ "SFW" ];
+            else jamSFW = [ "SFW", "NSFW" ];
+        }
+        else jamSFW = sfw;
+
+        setJamItems(items
+        .filter(x => (!x.nsfw && jamSFW.includes("SFW")) || (x.nsfw && jamSFW.includes("NSFW")))
+        .filter(x => !engines || engines.includes(x.engine as Engine))
+        .filter(x => !countries || countries.includes(x.location.split(", ").at(-1) as Country))
+        .filter(x => !teamSize || (x.team.length === 1 && teamSize.includes("Solo")) || (x.team.length > 1 && teamSize.includes("Group")))
+        .filter(x => !duration ||
+            (x.duration <= 1 && duration.includes("1H")) ||
+            (x.duration > 1 && x.duration <= 24 && duration.includes("1D")) ||
+            (x.duration > 24 && x.duration <= 74 && duration.includes("3D")) ||
+            (x.duration > 74 && x.duration <= 240 && duration.includes("9D")) ||
+            (x.duration > 240 && x.duration <= 768 && duration.includes("1M")) ||
+            (x.duration > 768 && duration.includes("More"))
+        )
+        .filter(x => !teammates ||
+            teammates.every(t => x.team.includes(t))
+        )
+        .sort((a, b) => {
+            if (sortMode === "Score")
+            {
+                const sa = getOverallScore(a);
+                const sb = getOverallScore(b)
+
+                if (sa === null) return 1;
+                if (sb === null) return -1;
+
+                return sa - sb;
+            }
+            else if (sortMode === "Duration")
+            {
+                return b.duration - a.duration;
+            }
+            return 0;
+        }));
+    }, [ sortMode, teamSize, duration, sfw, engines, countries, teammates ]);
+
+    if (!showFilters) return <button onClick={() => setShowFilters((x: boolean) => !x)}>Show filters</button>
 
     return <div className="is-flex flex-center-hor" id="jam-filters">
         <span className="jam-filter">
@@ -92,7 +104,7 @@ export default function GameJamFiltersComponent() {
                 <button title="Duration" className="button-icon" disabled={sortMode === "Duration"} onClick={_ => setSortMode("Duration")}><span className="material-symbols-outlined">timer</span></button>
             </span>
         </span>
-        <span className="jam-filter"></span>
+        <span className="flex-break"></span>
         <span className="jam-filter">
             <label htmlFor="team-size">Team size</label>
             <span id="team-size" className="button-group">
@@ -111,6 +123,7 @@ export default function GameJamFiltersComponent() {
                 <button title=">1 month" className={"button-icon " + (duration.includes("More") ? "active" : "")} onClick={_ => setDuration(toggleArrayElement(duration, "More"))}>M+</button>
             </span>
         </span>
+        <span className="flex-break"></span>
         <span className="jam-filter">
             <label htmlFor="engines">Engines</label>
             <span id="engines" className="button-group">
@@ -135,8 +148,9 @@ export default function GameJamFiltersComponent() {
                 <button title="Japan" className={"button-icon " + (countries.includes("Japan") ? "active" : "")} onClick={_ => setCountries(toggleArrayElement(countries, "Japan"))}>JP</button>
             </span>
         </span>
+        <span className="flex-break"></span>
         <span className="jam-filter">
-            <label htmlFor="teammates">Made with</label>
+            <label htmlFor="teammates">Only made with</label>
             <span id="teammates" className="button-group">
                 <button title="👌" className={"button-icon " + (teammates.includes("AC7EEDA7ACF39B61E8F1D02E06EF0C2A") ? "active" : "")} onClick={_ => setTeammates(toggleArrayElement(teammates, "AC7EEDA7ACF39B61E8F1D02E06EF0C2A"))}>👌</button>
                 <button title="🫪" className={"button-icon " + (teammates.includes("AF3A2CED67B5CA5503341879C03519C7") ? "active" : "")} onClick={_ => setTeammates(toggleArrayElement(teammates, "AF3A2CED67B5CA5503341879C03519C7"))}>🫪</button>

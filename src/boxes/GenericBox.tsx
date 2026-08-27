@@ -31,11 +31,11 @@ export default function GenericBox({ name, text, image, nsfw, buttons, imageCssM
         {
             if (b.type === "Link")
             {
-                btnHtml.push(<Link to={b.link!} target="_blank" className="button">{b.label}</Link>)
+                btnHtml.push(<Link key={`btn-${b.label}`} to={b.link!} target="_blank" className="button">{b.label}</Link>)
             }
             else if (b.type === "Custom")
             {
-                btnHtml.push(<button onClick={b.action}>{b.label}</button>)
+                btnHtml.push(<button key={`btn-${b.label}`} onClick={b.action}>{b.label}</button>)
             }
         }
     }

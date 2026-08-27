@@ -6,23 +6,19 @@ import type { SketchFormProps } from "../computer/SketchForm";
 import GameJamBox from "../boxes/impl/GameJamBox";
 import QuoteComponent from "../components/QuoteComponent";
 import SketchForm from "../computer/SketchForm";
-import { isNsfw } from "../utils";
 import GenericBox from "../boxes/GenericBox";
 import NavbarComponent from "../components/NavbarComponent";
 import GameJamFiltersComponent from "../components/GameJamFiltersComponent";
 
 export default function GameJamForm() {
     const [searchParams, setSearchParams] = useSearchParams();
+
+    const [items, setItems] = useState<GameJamItem[]>([]);
     
     const [shownSketch, setShownSketch] = useState<GameJamItem | null>(null);
     const [computerProps, setComputerProps] = useState<SketchFormProps | null>(null);
     
     const [embedGotUserClick, setEmbedGotUserClick] = useState(false);
-
-    const nsfw = isNsfw();
-
-    // Filters
-    const [showFilters, setShowFilters] = useState<boolean>(false);
 
     useEffect(() => {
         const game = searchParams.get("share")?.toUpperCase();
@@ -88,17 +84,12 @@ export default function GameJamForm() {
             <QuoteComponent />
             <NavbarComponent />
             <div className="is-flex flex-center-hor">
-            {
-                showFilters
-                ? <GameJamFiltersComponent />
-                : <button onClick={() => setShowFilters((x: boolean) => !x)}>Show filters</button>
-            }
+                <GameJamFiltersComponent items={gamejamData.jams} setJamItems={setItems} />
             </div>
-            <h3 className="text-center">{gamejamData.jams.length} entr{gamejamData.jams.length > 1 ? "ies" : "y"}</h3>
+            <h3 className="text-center">{items.length} entr{items.length > 1 ? "ies" : "y"}</h3>
             <div className="is-flex flex-center-hor">
                 {
-                    gamejamData.jams
-                        .filter(x => !x.nsfw || nsfw !== "FullSFW")
+                    items
                         .map((x: GameJamItem) => <GameJamBox key={x.fullName} item={x} loadGame={() => {
                             setSearchParams(sp => {
                                 sp.set("share", x.name);
