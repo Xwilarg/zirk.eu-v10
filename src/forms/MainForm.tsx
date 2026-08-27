@@ -33,11 +33,12 @@ export default function MainForm() {
         <QuoteComponent />
         <h1>Ohno what happened to everything?</h1>
         <p>
-            Don't worry Indra, I'm just remaking my website, it'll be back soon
+            It's the time of the year where website need to be remade, it'll be back soon as I'm porting all modules
         </p>
         <h1>What can I see in the meantime?</h1>
         <p>
-            <Link to={getNavigationNoHook("/gamejam", searchParams)} rel="me">Sample gamejam page</Link> is up!
+            Feel free to check the modules that are online:<br/>
+            <Link to={getNavigationNoHook("/gamejam", searchParams)} rel="me" className="button">Gamejam</Link>
         </p>
         <h1>Anything else?</h1>
         <p>

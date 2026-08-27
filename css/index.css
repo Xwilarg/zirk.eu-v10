@@ -3,7 +3,7 @@
     --primary-light: #ccc;
     --primary-background: #100f25;
 
-    --border: 1px solid var(--primary-light);
+    --border: 1px solid #333;
     --border-radius: 10px;
 
     --bg-size: 20px;
@@ -51,6 +51,9 @@ body {
 .flex-center-ver {
     align-items: center;
 }
+.flex-columns {
+    flex-direction: column;
+}
 
 .text-center {
     text-align: center;
@@ -78,14 +81,43 @@ body {
     height: 500px;
 }
 
+/* Buttons */
+a.button {
+    text-decoration: none;
+    display: inline-block;
+}
+button, .button {
+    background-color: transparent;
+    border: var(--border);
+    border-radius: var(--border-radius);
+    color: var(--primary-light);
+    padding: 10px;
+    cursor: pointer;
+    font-family: "Quantico", sans-serif;
+    font-size: 1em;
+}
+button:hover, .button:hover {
+    background-color: #28273057;
+}
+button.active, button:active {
+    background-color: #4d4c55;
+}
+button:disabled, .button:disabled {
+    cursor: not-allowed;
+    background-color: #4d4c55;
+}
+button.big, .button.big {
+    font-size: 2em;
+}
+
 /* Links */
-a:not(.ignore):not(.ignore-half):not(.nav-button) {
+a:not(.ignore):not(.ignore-half):not(.button) {
     color: rgb(212, 117, 117);
     text-decoration: underline;
     text-decoration-style: dotted;
     cursor: pointer;
 }
-a:hover:not(.ignore):not(.ignore-half):not(.nav-button) {
+a:hover:not(.ignore):not(.ignore-half):not(.button) {
     color: rgb(117, 166, 212);
     text-decoration: none;
 }
@@ -108,21 +140,35 @@ a.ignore-half {
 }
 
 /* Box */
-.box-name {
-    height: 20px;
+.card {
+    border: var(--border);
+    border-radius: var(--border-radius);
     width: 400px;
+    height: 430px;
+
+    background-color: var(--bg-primary);
+}
+@media (max-width: 400px) {
+    .card {
+        width: 100%;
+    }
+}
+
+.card-name {
+    height: 20px;
+    width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     text-wrap: nowrap;
 }
 
-.box-img {
+.card-img {
     height: calc(400px / 1.26); /* itch.io thumbnail aspect ratio */
-    width: 400px;
+    width: 100%;
     overflow: hidden;
     border-radius: var(--border-radius);
 }
-.box-img img {
+.card-img img {
     min-width: 100%;
     max-height: 100%;
     width: auto;
@@ -130,10 +176,79 @@ a.ignore-half {
     object-position: center;
     object-fit: cover;
 }
-.box-img.top img { object-position: top; }
-.box-img.bottom img { object-position: bottom; }
-.box-img.left img { object-position: left; }
-.box-img.right img { object-position: right; }
+.card-img.top img { object-position: top; }
+.card-img.bottom img { object-position: bottom; }
+.card-img.left img { object-position: left; }
+.card-img.right img { object-position: right; }
+
+.card-text {
+    padding: 10px;
+}
+
+.card-buttons {
+    padding: 10px;
+}
+
+/* Gamejam filters */
+.jam-filter {
+    display: inline-block;
+    width: 500px;
+}
+.jam-filter label {
+    display: block;
+}
+@media (max-width: 1000px) {
+    #jam-filters {
+        flex-direction: column;
+    }
+}
+@media (max-width: 500px) {
+    .jam-filter {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+/* Screen */
+#screen-container #canvas {
+    height: 100%;
+    width: 100%;
+
+    /* GB Studio */
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+#screen-container {
+    width: 2000px;
+    height: 1124px;
+    position: relative;
+    background-color: var(--primary-background);
+    margin-bottom: 10px;
+}
+@media (max-width: 1000px) {
+    #intro-quote-container {
+        width: 100%;
+    }
+}
+
+#screen-container #iframe-container {
+    height: 100%;
+    scrollbar-width: var(--scrollbar-width);
+    scrollbar-color: var(--primary-light) transparent;
+    overflow-y: scroll;
+}
+
+#screen-container iframe {
+    border: none;
+    width: 100%;
+    height: 650px;
+}
+
+#screen-container.fullscreen {
+    height: 1000px;
+}
 
 /* Quote */
 #intro-quote-container {
@@ -164,7 +279,7 @@ a.ignore-half {
   vertical-align: -5px;
 }
 
-.svg-quote-icon > object{
+.svg-quote-icon > object {
   height: 100%;
   display: block;
 }

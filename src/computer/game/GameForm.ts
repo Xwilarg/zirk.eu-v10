@@ -1,0 +1,199 @@
+import { type RefObject } from "react";
+
+export interface ButtonInfo
+{
+    name: string;
+    iconType: string;
+    scene: string | (() => void);
+    type: ButtonType;
+    disabled: boolean;
+    gameViewOnly: boolean
+}
+
+export type ButtonType = "ChangeScene" | "GiveInfo" | "Custom" | "Fullscreen"
+
+export function loadSketch(canvasRef: RefObject<HTMLCanvasElement | null>, sketchInstance: RefObject<any>, loadedScripts: RefObject<HTMLScriptElement[]>,
+    resFolder: string, filename: string, engine: string, version: string, onLoad: ((instance: RefObject<any> | null) => void) | null
+) {
+    loadProjectInternal(canvasRef, sketchInstance, loadedScripts, resFolder, filename, engine, version, onLoad);
+}
+
+export function getLoaderFiles(resFolder: string, filename: string, engine: string, version: string): string[] // Used by desktop mode
+{
+    if (engine == "GB Studio")
+    {
+        return [ `${resFolder}binjgb.js`, `${resFolder}js/script.js` ];
+    }
+
+    if (engine == "Unreal Engine") {
+        return [ `${resFolder}${filename}.UE4.js` ];
+    }
+
+    const versionNumber = parseInt(version.split('.')[0]);
+    if (versionNumber <= 2019) {
+        return [ `${resFolder}UnityLoader.js` ];
+    }
+
+    return [ `${resFolder}${filename}.loader.js` ];
+}
+
+function loadProjectInternal(canvasRef: RefObject<HTMLCanvasElement | null>, sketchInstance: RefObject<any>, loadedScripts: RefObject<HTMLScriptElement[]>, resFolder: string, filename: string, engine: string, version: string, onLoad: ((instance: RefObject<any> | null) => void) | null)
+{
+    const loading = document.createElement("div");
+    loading.style = "position: absolute; top: 10px; left: 10px;";
+    const text = document.createTextNode("Loading...");
+    loading.appendChild(text);
+
+    const originalAlert = window.alert;
+    window.alert = (msg?: any) => {
+        if (typeof msg === "string" && msg.includes("IndexedDB")) {
+            console.warn(`Supressing Unity alert: ${msg}`);
+            return;
+        }
+        originalAlert(msg);
+    };
+
+    try
+    {
+        if (engine === "GB Studio")
+        {
+            loadGBStudioProjectInternal(canvasRef, sketchInstance, loadedScripts, resFolder, filename, version, loading, onLoad);
+        }
+        else if (engine === "Unreal Engine")
+        {
+            loadUnrealEngineProjectInternal(canvasRef, sketchInstance, loadedScripts, resFolder, filename, version, loading, onLoad);
+        }
+        else
+        {
+            loadUnityProjectInternal(canvasRef, sketchInstance, loadedScripts, resFolder, filename, version, loading, onLoad);
+        }
+    }
+    catch (e)
+    {
+        loading.textContent = `Failed to load: ${e}`;
+    }
+}
+
+function loadUnrealEngineProjectInternal(canvasRef: RefObject<HTMLCanvasElement | null>, sketchInstance: RefObject<any>, loadedScripts: RefObject<HTMLScriptElement[]>, resFolder: string, filename: string, version: string, loading: HTMLDivElement, onLoad: ((instance: RefObject<any> | null) => void) | null)
+{
+    const script1 = document.createElement("script");
+    loadedScripts.current!.push(script1);
+    script1.src = `https://code.jquery.com/jquery-2.1.3.min.js`;
+    script1.onload = () => {
+        const script2 = document.createElement("script");
+        loadedScripts.current!.push(script2);
+        script2.src = `https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js`;
+        script2.onload = () => {
+            const script3 = document.createElement("script");
+            loadedScripts.current!.push(script3);
+            script3.src = `${resFolder}${filename}.UE4.js`;
+            script3.onload = () => {
+                loading.remove();
+                onLoad?.(null);
+            };
+            script3.onerror = (e) => { loading.textContent = `Failed to load: ${e}`; }
+            document.body.appendChild(script3);
+        };
+        script2.onerror = (e) => { loading.textContent = `Failed to load: ${e}`; }
+        document.body.appendChild(script2);
+    };
+    script1.onerror = (e) => { loading.textContent = `Failed to load: ${e}`; }
+    document.body.appendChild(script1);
+}
+
+function loadGBStudioProjectInternal(canvasRef: RefObject<HTMLCanvasElement | null>, sketchInstance: RefObject<any>, loadedScripts: RefObject<HTMLScriptElement[]>, resFolder: string, filename: string, version: string, loading: HTMLDivElement, onLoad: ((instance: RefObject<any> | null) => void) | null)
+{
+    const script1 = document.createElement("script");
+    loadedScripts.current!.push(script1);
+    script1.src = `${resFolder}binjgb.js`;
+    script1.onload = () => {
+        fetch(`${resFolder}js/script.js`)
+            .then(resp => resp.text())
+            .then(text => {
+                const script2 = document.createElement("script");
+                loadedScripts.current!.push(script2);
+                script2.textContent = text.replace('const ROM_FILENAME = "rom/game.gb";', `const ROM_FILENAME = "${resFolder}rom/game.gb";`);
+                script2.textContent += "const customControls = {}";
+                script2.onload = () => {
+                    loading.remove();
+                    onLoad?.(null);
+                };
+                script2.onerror = (e) => { loading.textContent = `Failed to load: ${e}`; }
+                document.body.appendChild(script2);
+            });
+    };
+    script1.onerror = (e) => { loading.textContent = `Failed to load: ${e}`; }
+    document.body.appendChild(script1);
+}
+
+function loadUnityProjectInternal(canvasRef: RefObject<HTMLCanvasElement | null>, sketchInstance: RefObject<any>, loadedScripts: RefObject<HTMLScriptElement[]>, resFolder: string, filename: string, version: string, loading: HTMLDivElement, onLoad: ((instance: RefObject<any> | null) => void) | null)
+{
+    canvasRef.current!.parentElement!.appendChild(loading);
+
+    let buildUrl = resFolder;
+    let assetsUrl = `${resFolder}StreamingAssets/`;
+    let loaderUrl = `${buildUrl}${filename}.loader.js`;
+
+    let config;
+
+    const versionNumber = parseInt(version.split('.')[0]);
+    if (versionNumber <= 2019) {
+        config = null;
+        loaderUrl = `${buildUrl}UnityLoader.js`;
+    } else if (version === "2021.1.4f1" || version === "6000.5.0a4") {
+        config = {
+            dataUrl: `${buildUrl}${filename}.data`,
+            frameworkUrl: `${buildUrl}${filename}.framework.js`,
+            codeUrl: `${buildUrl}${filename}.wasm`,
+            streamingAssetsUrl: assetsUrl,
+            companyName: "Zirk",
+            productName: filename,
+            productVersion: "1.0",
+            showBanner: (msg: string, type: string) => `${type}: ${msg}`,
+        };
+    } else {
+        config = {
+            dataUrl: `${buildUrl}${filename}.data.unityweb`,
+            frameworkUrl: `${buildUrl}${filename}.framework.js.unityweb`,
+            codeUrl: `${buildUrl}${filename}.wasm.unityweb`,
+            streamingAssetsUrl: assetsUrl,
+            companyName: "Zirk",
+            productName: filename,
+            productVersion: "1.0",
+            showBanner: (msg: string, type: string) => `${type}: ${msg}`,
+        };
+    }
+
+    const script = document.createElement("script");
+    loadedScripts.current!.push(script);
+    script.src = loaderUrl;
+    script.onload = () => {
+        console.log(`Canvas dimensions: ${canvasRef.current!.width} x ${canvasRef.current!.height}`);
+        if (versionNumber <= 2019) {
+            canvasRef.current!.classList.add("hidden");
+            loading.remove();
+            // @ts-ignore
+            sketchInstance.current = UnityLoader.instantiate(
+                "canvas-unity-2019",
+               `${buildUrl}${filename}.json`
+            );
+        }
+        else
+        {
+            canvasRef.current!.classList.remove("hidden");
+            // @ts-ignore
+            createUnityInstance(canvasRef.current!, config, (progress) => {
+                loading.textContent = `Loading... ${Math.trunc(parseFloat(progress) * 100)}%`
+            }).then((unityInstance: any) => {
+                loading.remove();
+                sketchInstance.current = unityInstance;
+                onLoad?.(sketchInstance);
+            }).catch((message: string) => {
+                loading.textContent = `Failed to load: ${message}`
+            });
+        }
+    };
+    script.onerror = (e) => { loading.textContent = `Failed to load: ${e}`; }
+
+    document.body.appendChild(script);
+}

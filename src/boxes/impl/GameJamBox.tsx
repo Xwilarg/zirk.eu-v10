@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { isNsfw } from "../utils";
-import { Link, useLocation } from "react-router";
-import type { GameJamItem } from "../models/Gamejam";
-import GenericBox from "../components/GenericBox";
+import { useState } from "react";
+import { isNsfw } from "../../utils";
+import type { GameJamItem } from "../../models/Gamejam";
+import type { Button } from "../../models/Button";
+import GenericBox from "../GenericBox";
 
 interface GameJamItemFormProps
 {
     item: GameJamItem,
-    showComputer: () => void
+    loadGame: () => void
 }
 
 function prettifyDuration(h: number): string {
@@ -33,7 +33,7 @@ function getOverallScore(item: GameJamItem): number | null {
     return null;
 }
 
-export default function GameJamBox({ item, showComputer }: GameJamItemFormProps)
+export default function GameJamBox({ item, loadGame }: GameJamItemFormProps)
 {
     let [previewGif, setPreviewGif] = useState<boolean>(false);
 
@@ -50,12 +50,30 @@ export default function GameJamBox({ item, showComputer }: GameJamItemFormProps)
 
     let score = getOverallScore(item);
 
-    var box = 
-        <GenericBox name={item.fullName} image={item.name === null ? null : `/data/img/gamejam/${item.name}.${format}`} nsfw={item.nsfw} imageCssModifiers={pos}
+    let buttons: Button[] = [];
+    if (!hideNsfw)
+    {
+        if (item.sketch)
+        {
+            buttons.push({
+                label: "Play",
+                type: "Custom",
+                action: loadGame
+            })
+        }
+        if (item.website)
+        {
+            buttons.push({
+                label: "Website",
+                type: "Link",
+                link: item.website
+            })
+        }
+    }
+
+    return <GenericBox name={item.fullName} image={item.name === null ? null : `/data/img/gamejam/${item.name}.${format}`} nsfw={item.nsfw} imageCssModifiers={pos}
             onMouseEnter={_ => { if (!hideNsfw) setPreviewGif(true); }}
             onMouseLeave={_ => { setPreviewGif(false) } }
+            buttons={buttons}
         ></GenericBox>
-
-    if (!item.website) return box;
-    return <Link to={item.website} target="_blank" rel="external">{box}</Link>
 };
