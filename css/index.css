@@ -67,17 +67,6 @@ body {
     text-align: center;
 }
 
-.container {
-    display: block;
-    width: 80%;
-    margin: 0 auto;
-
-    box-sizing: border-box;
-    padding: 5px;
-    margin-bottom: 15px;
-
-    overflow: hidden;
-}
 @media (max-width: 1000px) {
     .container {
         width: 100%;
@@ -87,9 +76,11 @@ body {
 /* Buttons */
 a.button {
     text-decoration: none;
-    display: inline-block;
 }
 button, .button {
+    display: inline-flex;
+    align-items: center;
+    box-sizing: border-box;
     background-color: transparent;
     border: var(--border);
     border-radius: var(--border-radius);
@@ -98,6 +89,7 @@ button, .button {
     cursor: pointer;
     font-family: "Quantico", sans-serif;
     font-size: 1em;
+    height: 45px;
 }
 button:hover, .button:hover {
     background-color: #28273057;

@@ -28,6 +28,7 @@ const links = [
 export default function MainForm() {
     const [searchParams] = useSearchParams();
     const [index, setIndex] = useState(randInt(links.length));
+    const [showMore, setShowMore] = useState(false);
 
     return <div>
         <QuoteComponent />
@@ -41,6 +42,11 @@ export default function MainForm() {
             <br/>
             <Link to={getNavigationNoHook("/gamejam", searchParams)} rel="me" className="button">Gamejam</Link>
             <Link to={getNavigationNoHook("/project", searchParams)} rel="me" className="button">Projects</Link>
+            {
+                showMore
+                ? <Link to={getNavigationNoHook("/game", searchParams)} rel="me" className="button">Games</Link>
+                : <button onClick={() => setShowMore(true)}>More</button>
+            }
         </p>
         <h1>Anything else?</h1>
         <p>
