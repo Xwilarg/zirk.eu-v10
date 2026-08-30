@@ -83,11 +83,6 @@ body {
     }
 }
 
-.box {
-    width: 400px;
-    height: 500px;
-}
-
 /* Buttons */
 a.button {
     text-decoration: none;
@@ -199,8 +194,10 @@ a.ignore-half {
 /* Modals */
 .modal {
     position: fixed;
-    width: 1350px;
-    height: 750px;
+
+    width: min(1350px, calc(100vh * 16 / 9 - 50px));
+    aspect-ratio: 16 / 9;
+
     transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
