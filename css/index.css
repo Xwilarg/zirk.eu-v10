@@ -8,7 +8,7 @@
 
     --bg-size: 20px;
     --bg-primary: #080814;
-    --bg-line: #0f0f0f;
+    --bg-line: #0c0b1a;
 }
 
 /* Background & font */
@@ -26,6 +26,7 @@ html, input, textarea {
 
 body {
     margin: 0;
+    padding: 0 10px;
     box-sizing: border-box;
 
     /* https://stackoverflow.com/a/50277867 */
@@ -145,12 +146,12 @@ a.ignore-half {
 .card {
     border: var(--border);
     border-radius: var(--border-radius);
-    width: 400px;
-    height: 430px;
+    width: 450px;
+    height: 480px;
 
     background-color: var(--bg-primary);
 }
-@media (max-width: 400px) {
+@media (max-width: 450px) {
     .card {
         width: 100%;
     }
@@ -165,8 +166,9 @@ a.ignore-half {
 }
 
 .card-img {
-    height: calc(400px / 1.26); /* itch.io thumbnail aspect ratio */
-    width: 100%;
+    height: calc(450px / 1.26); /* itch.io thumbnail aspect ratio */
+    width: calc(100% - 20px);
+    margin-left: 10px;
     overflow: hidden;
     border-radius: var(--border-radius);
 }

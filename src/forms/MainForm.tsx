@@ -38,7 +38,9 @@ export default function MainForm() {
         <h1>What can I see in the meantime?</h1>
         <p>
             Feel free to check the modules that are online:<br/>
+            <br/>
             <Link to={getNavigationNoHook("/gamejam", searchParams)} rel="me" className="button">Gamejam</Link>
+            <Link to={getNavigationNoHook("/project", searchParams)} rel="me" className="button">Projects</Link>
         </p>
         <h1>Anything else?</h1>
         <p>
