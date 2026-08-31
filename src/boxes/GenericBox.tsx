@@ -30,13 +30,18 @@ export default function GenericBox({ name, text, image, nsfw, buttons, imageCssM
     {
         for (const b of buttons)
         {
+            let label = <></>
+            if (b.labelType === "GoogleIcon") label = <span className="material-symbols-outlined">{b.label}</span>;
+            else if (b.labelType === "LocalIcon") label = <img width={24} height={24} src={`/img/icon/${b.label}`} />
+            else label = <>{b.label}</>;
+
             if (b.type === "Link")
             {
-                btnHtml.push(<Link key={`btn-${b.label}`} to={b.link!} target="_blank" className="button">{b.label}</Link>)
+                btnHtml.push(<Link key={`btn-${b.label}`} to={b.link!} target="_blank" className={`button ${b.color === "Primary" ? "primary" : ""}`}>{label}</Link>)
             }
             else if (b.type === "Custom")
             {
-                btnHtml.push(<button key={`btn-${b.label}`} onClick={b.action}>{b.label}</button>)
+                btnHtml.push(<button key={`btn-${b.label}`} onClick={b.action} className={b.color === "Primary" ? "primary" : ""}>{label}</button>)
             }
         }
     }

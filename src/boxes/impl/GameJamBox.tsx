@@ -56,7 +56,9 @@ export default function GameJamBox({ item, loadGame }: GameJamItemFormProps)
         if (item.sketch)
         {
             buttons.push({
-                label: "Play",
+                color: "Primary",
+                label: "play_arrow",
+                labelType: "GoogleIcon",
                 type: "Custom",
                 action: loadGame
             })
@@ -64,9 +66,21 @@ export default function GameJamBox({ item, loadGame }: GameJamItemFormProps)
         if (item.website)
         {
             buttons.push({
-                label: "Website",
+                color: "Default",
+                label: "language",
+                labelType: "GoogleIcon",
                 type: "Link",
                 link: item.website
+            })
+        }
+        if (item.github)
+        {
+            buttons.push({
+                color: "Default",
+                label: "github.svg",
+                labelType: "LocalIcon",
+                type: "Link",
+                link: item.github
             })
         }
     }

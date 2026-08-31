@@ -91,6 +91,9 @@ button, .button {
     font-size: 1em;
     height: 45px;
 }
+button.primary, .button.primary {
+    background-color: #367236;
+}
 button:hover, .button:hover {
     background-color: #28273057;
 }
@@ -139,7 +142,7 @@ a.ignore-half {
     border: var(--border);
     border-radius: var(--border-radius);
     width: 450px;
-    height: 480px;
+    height: 475px;
 
     background-color: var(--bg-primary);
 }
