@@ -2,55 +2,70 @@ import { type ReactElement, useEffect, useState } from "react";
 import QuoteComponent from "../components/QuoteComponent";
 import { Link, useSearchParams } from "react-router";
 import { getNavigationNoHook, randInt } from "../utils";
-
-const links = [
-    "https://youtu.be/eC5j9NO3Lmc", // Minecraft Science
-    "https://youtu.be/b2F-DItXtZs", // MongoDB
-    "https://youtu.be/vc-kThNPVnc", // Trains
-    "https://youtu.be/bsXcoDSFJQM", // Japan:tm:
-    "https://youtu.be/xsw3ldAjHlQ", // Kiwi card
-    "https://youtu.be/P9-SUS1j1vE", // Just wait a moment
-    "https://youtu.be/o333VVbi-bs", // Don't fight the music
-    "https://youtu.be/G2_GfuDIgYY", // Bag brother
-    "https://youtu.be/nsPQvZm_rgM", // Google tulip
-    "https://youtu.be/zYkLgxkXUB8", // Andenayon
-    "https://youtu.be/jtMq-Vra7dY", // Tsurara
-    "https://youtu.be/a-dQc134Z-Q", // Le mans
-    "https://youtu.be/jcBqPla5Mfo", // Portal chamber too hard
-    "https://youtu.be/jFCD9KB-COQ", // Souran bushi
-    "https://youtu.be/4Ym-oPuVkj8", // Dutch commercial
-    "https://youtu.be/hWTFG3J1CP8", // Tetris
-    "https://youtu.be/oY2nVQNlUB8", // Scott Sterling
-    "https://youtu.be/6Ajhzlq42f0", // Super spice bros 2
-    "https://youtu.be/o0u4M6vppCI", // Shia LaBeouf
-];
+import GenericBox from "../boxes/GenericBox";
+import sheepData from "../../data/json/sheep.json"
+import ImageModalForm from "../components/modal/ImageModalForm";
+import SketchForm from "../computer/SketchForm";
 
 export default function MainForm() {
     const [searchParams] = useSearchParams();
-    const [index, setIndex] = useState(randInt(links.length));
     const [showMore, setShowMore] = useState(false);
+    const [showSheep, setShowSheep] = useState(false);
+    const [preview, setPreview] = useState<string | null>(null);
 
     return <div>
         <QuoteComponent />
-        <h1>Ohno what happened to everything?</h1>
-        <p>
-            It's the time of the year where website need to be remade, it'll be back soon as I'm porting all modules
-        </p>
-        <h1>What can I see in the meantime?</h1>
-        <p>
-            Feel free to check the modules that are online:<br/>
-            <br/>
-            <Link to={getNavigationNoHook("/gamejam", searchParams)} rel="me" className="button">Gamejam</Link>
-            <Link to={getNavigationNoHook("/project", searchParams)} rel="me" className="button">Projects</Link>
+        <div className="is-flex flex-center-hor">
+            <GenericBox name="Sketch" nsfw={false} custom={ <SketchForm isOn={false} loadedGame={null} buttons={[]} isFullscreen={false} onLoad={null} /> } />
+            <GenericBox name="Intro" nsfw={false} custom={<div>
+                <h3>Welcome on <span className="gradient-highlight">my amazing website</span>, I am Zirk, a game and software developer</h3>
+                <br/>
+                I am probably mostly known for <span className="katsis-highlight">Katsis</span> (which I co-created with Fractal) and <Link to={getNavigationNoHook("/gamejam", searchParams)}>participating at gamejams</Link><br/>
+                <br/>
+                I overall like to work on lot of different projects, this website being on of them!<br/>
+                It's still slowly being remade from the previous iteration but feel free to explore around!<br/>
+                <br/>
+                And if you have any question or so, feel free to contact me on <a href="mailto:xwilarg@protonmail.com">xwilarg@protonmail.com</a> or on Discord (zirk)<br/>
+                <br/>
+                <br/>
+                <br/>
+                If you scrolled down there, why not contributing to my <a onClick={_ => setShowSheep(x => !x)}>sheep collection</a>?
+            </div>} />
             {
-                showMore
-                ? <Link to={getNavigationNoHook("/game", searchParams)} rel="me" className="button">Games</Link>
-                : <button onClick={() => setShowMore(true)}>More</button>
+                showSheep ?
+                <GenericBox name="Sheep" nsfw={false} custom={<div className="is-flex">
+                    {
+                        sheepData.map(x =>
+                            <div className="sheep-img" key={x.name}>
+                                {
+                                    x.link.value.startsWith("https://")
+                                    ? <a className="ignore" target="_blank" href={x.link.value}><p>{x.name}</p></a>
+                                    : <p onClick={() => { alert(`${x.link.name}: ${x.link.value}`); }}>{x.name}</p>
+                                }
+                                <img className="clickable" src={`/data/img/sheep/${x.image}`} onClick={() => setPreview(`/data/img/sheep/${x.image}`)} />
+                            </div>
+                        )
+                    }
+                </div>} />
+                : <></>
             }
-        </p>
-        <h1>Anything else?</h1>
-        <p>
-            <Link onClick={_ => setIndex(randInt(links.length))} to={links[index]} rel="external" target="_blank">Not really</Link>
-        </p>
+            <GenericBox name="Navigation" nsfw={false} custom={<>    
+                <Link to={getNavigationNoHook("/gamejam", searchParams)} rel="me" className="button">Gamejam</Link>
+                <Link to={getNavigationNoHook("/project", searchParams)} rel="me" className="button">Projects</Link>
+                {
+                    showMore
+                    ? <Link to={getNavigationNoHook("/game", searchParams)} rel="me" className="button">Games</Link>
+                    : <button onClick={() => setShowMore(true)}>More</button>
+                }
+            </>} />
+            <GenericBox name="Gamejam" nsfw={false} image={`/data/img/recap/Gamejam-0${randInt(3) + 1}.png`} buttons={[{label: "See more", type: "Link", labelType: "Text", color: "Primary", link: "/gamejam" }]} />
+            <GenericBox name="Projects" nsfw={false}text="TODO" buttons={[{label: "See more", type: "Link", labelType: "Text", color: "Primary", link: "/project" }]} />
+            <GenericBox name="Katsis" nsfw={false} image={`/data/img/recap/Katsis-0${randInt(3) + 1}.png`} buttons={[]} />
+        </div>
+        {
+            preview !== null ?
+            <ImageModalForm image={preview} unsetImage={setPreview} />
+            : <></>
+        }
     </div>
 }

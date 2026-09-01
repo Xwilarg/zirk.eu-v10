@@ -101,15 +101,6 @@ const SketchForm = forwardRef((
                     : <></>
                 }
             </span>
-            {/*
-                !isCanvasUsed ?
-                    <div id="screen-desktop">
-                        <DesktopForm tracedGame={loadedGame} updateTrace={(value: boolean) => {
-                            setIsTrace(value);
-                        }} />
-                    </div>
-                    : <></>*/
-            }
             
         </div>
         { /* For GB Studio */ }

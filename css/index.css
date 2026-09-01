@@ -163,6 +163,9 @@ a.ignore-half {
     height: calc(450px / 1.26); /* itch.io thumbnail aspect ratio */
     width: calc(100% - 20px);
     margin-left: 10px;
+    overflow-y: auto;
+    scrollbar-width: var(--scrollbar-width);
+    scrollbar-color: var(--primary-light) transparent;
 }
 .card-iconlabel {
     flex-direction: row;
@@ -263,9 +266,16 @@ a.ignore-half {
     image-rendering: pixelated;
 }
 
-#screen-container {
+#screen-container.fullscreen {
     width: min(2000px, calc(100vh * 16 / 9 - 50px));
     aspect-ratio: 16 / 9;
+}
+#screen-container:not(.fullscreen) {
+    width: 100%;
+    height: calc(100% - 10px);
+}
+
+#screen-container {
     position: relative;
     background-color: var(--primary-background);
     margin-bottom: 10px;
@@ -329,4 +339,33 @@ a.ignore-half {
     text-align: center;
     font-size: 50px;
     margin-top: 100px;
+}
+
+/* Highlights */
+.katsis-highlight {
+    color: #fa8fb3;
+    font-weight: bold;
+}
+
+.gradient-highlight {
+  background: linear-gradient(to right, #5769d1 20%, #da5555 30%, #da5555 70%, #5769d1 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: gradient-anim 7s ease-in-out infinite alternate;
+}
+
+@keyframes gradient-anim {
+  to {
+    background-position: -1000%;
+  }
+}
+
+/* Spe */
+.sheep-img {
+    width: calc(50% - 10px);
+}
+.sheep-img img {
+    max-width: 100%;
 }

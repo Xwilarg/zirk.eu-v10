@@ -1,7 +1,4 @@
 import gamejamData from "../../data/json/projects.json"
-import { useSearchParams } from "react-router";
-import type { GameJamItem } from "../models/Gamejam";
-import GameJamBox from "../boxes/impl/GameJamBox";
 import QuoteComponent from "../components/QuoteComponent";
 import NavbarComponent from "../components/NavbarComponent";
 import type { ProjectItem } from "../models/Project";

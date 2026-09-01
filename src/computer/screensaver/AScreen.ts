@@ -46,9 +46,9 @@ export abstract class AScreen
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         }
 
-        this.ctx.fillStyle = "#8080801a";
+        /*this.ctx.fillStyle = "#8080801a";
         this.ctx.font = "bold 50px Quantico, sans-serif";
-        this.ctx.fillText("SKETCH", this.canvas.width - 209, 50);
+        this.ctx.fillText("SKETCH", this.canvas.width - 209, 50);*/
 
         const now = Date.now();
         const delta = now - this.refTime;

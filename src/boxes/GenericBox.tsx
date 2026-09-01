@@ -11,6 +11,7 @@ interface GenericBoxProps
     text?: string
     image?: string | null
     icons?: IconInfo[]
+    custom?: ReactElement
 
     nsfw: boolean
 
@@ -23,7 +24,7 @@ interface GenericBoxProps
     onMouseLeave?: React.MouseEventHandler<HTMLImageElement> | undefined
 }
 
-export default function GenericBox({ name, text, image, icons, nsfw, buttons, imageCssModifiers, onClick, onMouseEnter, onMouseLeave } : GenericBoxProps) {
+export default function GenericBox({ name, text, image, icons, custom, nsfw, buttons, imageCssModifiers, onClick, onMouseEnter, onMouseLeave } : GenericBoxProps) {
     let nsfwStatus = isNsfw();
     let hideNsfw = nsfw && nsfwStatus !== "NSFW";
 
@@ -71,6 +72,10 @@ export default function GenericBox({ name, text, image, icons, nsfw, buttons, im
                     </div>)
                 }
             </div>
+    }
+    else if (custom)
+    {
+        mainContent = custom
     }
 
     return <div className="card">

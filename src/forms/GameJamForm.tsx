@@ -64,10 +64,10 @@ export default function GameJamForm() {
                         isOn={computerProps.isOn}
                         loadedGame={computerProps.loadedGame}
                         buttons={[]}
-                        isFullscreen={false}
+                        isFullscreen={true}
                         onLoad={null}
                     />
-                    : <div id="screen-container" className="is-flex flex-center-hor flex-center-ver">
+                    : <div id="screen-container" className=" fullscreen is-flex flex-center-hor flex-center-ver">
                         <button className="big" onClick={() => setEmbedGotUserClick(true)}>Play</button>
                     </div>
             }
