@@ -46,6 +46,19 @@ export default function GenericBox({ name, text, image, nsfw, buttons, imageCssM
         }
     }
 
+    let mainContent = <></>;
+    if (image)
+    {
+        mainContent = 
+            <div className={"card-img is-flex flex-center-hor " + imageCssModifiers}>
+                <img className={(hideNsfw && image !== null ? "blur" : (onClick ? "clickable" : ""))} src={image === null ? "/img/ComingSoon.png" : image}
+                    onMouseEnter={onMouseEnter}
+                    onMouseLeave={onMouseLeave}
+                    onClick={onClick}
+                />
+            </div>
+    }
+
     return <div className="card">
         <p className={"text-center card-name"}>{hideNsfw ? "" : name}</p>
         {
