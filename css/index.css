@@ -178,6 +178,7 @@ a.ignore-half {
 .card-img {
     overflow: hidden;
     border-radius: var(--border-radius);
+    height: calc(450px / 1.26); /* itch.io thumbnail aspect ratio */
 }
 .card-img img {
     min-width: 100%;
