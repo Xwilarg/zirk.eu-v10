@@ -159,11 +159,23 @@ a.ignore-half {
     text-overflow: ellipsis;
     text-wrap: nowrap;
 }
-
-.card-img {
+.card-content {
     height: calc(450px / 1.26); /* itch.io thumbnail aspect ratio */
     width: calc(100% - 20px);
     margin-left: 10px;
+}
+.card-iconlabel {
+    flex-direction: row;
+    width: calc(50% - 25px);
+    padding-left: 20px;
+    margin-top: 60px;
+    font-size: larger;
+}
+.card-iconlabel > p {
+    margin: 0;
+}
+
+.card-img {
     overflow: hidden;
     border-radius: var(--border-radius);
 }

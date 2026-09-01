@@ -1,5 +1,5 @@
 export interface IconInfo
 {
-    name: string
+    label: string
     icon: string
 }

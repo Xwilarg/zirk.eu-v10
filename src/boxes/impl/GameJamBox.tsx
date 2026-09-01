@@ -35,7 +35,8 @@ function getOverallScore(item: GameJamItem): number | null {
 
 export default function GameJamBox({ item, loadGame }: GameJamItemFormProps)
 {
-    let [previewGif, setPreviewGif] = useState<boolean>(false);
+    const [previewGif, setPreviewGif] = useState(false);
+    const [showInfo, setShowInfo] = useState(false);
 
     let format = previewGif ? "webp" : (item.format ?? "jpg");
     let nsfwStatus = isNsfw();
@@ -83,6 +84,40 @@ export default function GameJamBox({ item, loadGame }: GameJamItemFormProps)
                 link: item.github
             })
         }
+        buttons.push({
+            color: "Default",
+            label: "info",
+            labelType: "GoogleIcon",
+            type: "Custom",
+            action: () => { setShowInfo(x => !x) }
+        })
+    }
+
+    if (showInfo) {
+        let score = getOverallScore(item);
+        
+        return <GenericBox name={item.fullName} nsfw={item.nsfw}
+                icons={[{
+                    icon: "globe",
+                    label: item.location.split(',').at(-1) ?? ""
+                }, {
+                    icon: "timer",
+                    label: prettifyDuration(item.duration)
+                }, {
+                    icon: "feedback",
+                    label: item.theme.join(", ")
+                }, {
+                    icon: "settings",
+                    label: item.engine
+                }, {
+                    icon: "calendar_today",
+                    label: item.date
+                }, {
+                    icon: "leaderboard",
+                    label: (score && (!item.rating!.entriesRated || item.rating!.entriesRated > 1)) ? ((score * 100).toFixed(1) + "%") : ""
+                }]}
+                buttons={buttons}
+            ></GenericBox>
     }
 
     return <GenericBox name={item.fullName} image={item.name === null ? null : `/data/img/gamejam/${item.name}.${format}`} nsfw={item.nsfw} imageCssModifiers={pos}

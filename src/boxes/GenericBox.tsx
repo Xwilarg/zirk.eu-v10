@@ -2,6 +2,7 @@ import type { ReactElement } from "react";
 import type { Button } from "../models/Button";
 import { isNsfw } from "../utils";
 import { Link } from "react-router";
+import type { IconInfo } from "../models/IconInfo";
 
 interface GenericBoxProps
 {
@@ -9,6 +10,7 @@ interface GenericBoxProps
 
     text?: string
     image?: string | null
+    icons?: IconInfo[]
 
     nsfw: boolean
 
@@ -21,7 +23,7 @@ interface GenericBoxProps
     onMouseLeave?: React.MouseEventHandler<HTMLImageElement> | undefined
 }
 
-export default function GenericBox({ name, text, image, nsfw, buttons, imageCssModifiers, onClick, onMouseEnter, onMouseLeave } : GenericBoxProps) {
+export default function GenericBox({ name, text, image, icons, nsfw, buttons, imageCssModifiers, onClick, onMouseEnter, onMouseLeave } : GenericBoxProps) {
     let nsfwStatus = isNsfw();
     let hideNsfw = nsfw && nsfwStatus !== "NSFW";
 
@@ -51,27 +53,34 @@ export default function GenericBox({ name, text, image, nsfw, buttons, imageCssM
     {
         mainContent = 
             <div className={"card-img is-flex flex-center-hor " + imageCssModifiers}>
-                <img className={(hideNsfw && image !== null ? "blur" : (onClick ? "clickable" : ""))} src={image === null ? "/img/ComingSoon.png" : image}
-                    onMouseEnter={onMouseEnter}
-                    onMouseLeave={onMouseLeave}
-                    onClick={onClick}
-                />
+                <img className={(hideNsfw && image !== null ? "blur" : (onClick ? "clickable" : ""))} src={image === null ? "/img/ComingSoon.png" : image} />
+            </div>
+    }
+    else if (text)
+    {
+        mainContent = <p className="card-text" dangerouslySetInnerHTML={{ __html: text! }}></p>
+    }
+    else if (icons)
+    {
+        mainContent =
+            <div className="is-flex">
+                {
+                    icons.map(x => <div className="is-flex card-iconlabel">
+                        <span className="material-symbols-outlined">{x.icon}</span>
+                        <p className="is-flex flex flex-center-ver">{x.label}</p>
+                    </div>)
+                }
             </div>
     }
 
     return <div className="card">
         <p className={"text-center card-name"}>{hideNsfw ? "" : name}</p>
-        {
-            image ?
-            <div className={"card-img is-flex flex-center-hor " + imageCssModifiers}>
-                <img className={(hideNsfw && image !== null ? "blur" : (onClick ? "clickable" : ""))} src={image === null ? "/img/ComingSoon.png" : image}
-                    onMouseEnter={onMouseEnter}
-                    onMouseLeave={onMouseLeave}
-                    onClick={onClick}
-                />
-            </div>
-            : <p className="card-text" dangerouslySetInnerHTML={{ __html: text! }}></p>
-        }
+        <div className="card-content"
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            onClick={onClick}>
+            { mainContent }
+        </div>
         <div className="card-buttons is-flex">{ btnHtml }</div>
     </div>
 }
