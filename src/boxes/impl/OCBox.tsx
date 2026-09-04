@@ -13,9 +13,8 @@ export default function OCBox({ item }: OCItemFormProps)
 
     const category = item.images.find(x => x.default);
     const image = category?.images.find(x => x.default)!;
-    console.log(image)
 
-    return <GenericBox key={item.name} name={item.name} image={`/data/img/ocs/${item.metadata.folder}/${image.link}`} nsfw={image.nsfw}
+    return <GenericBox key={item.name} name={item.name} image={`/data/previews/ocs/${item.metadata.folder}/${image.link}`} nsfw={image.nsfw}
             imageCssModifiers={`top ${category?.type === "pixel" ? "pixel" : ""}`} buttons={[]}
         ></GenericBox>
 };
