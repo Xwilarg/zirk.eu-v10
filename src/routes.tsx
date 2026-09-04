@@ -8,6 +8,7 @@ import GameJamForm from './forms/GameJamForm'
 import { getNavigationNoHook } from './utils'
 import GameForm from './forms/GameForm.tsx'
 import ProjectForm from './forms/ProjectForm.tsx'
+import OCform from './forms/OCForm.tsx'
 
 function RedirectCompat()
 {
@@ -32,6 +33,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path='/gamejam' element={<GameJamForm/>} />
             <Route path='/game' element={<GameForm/>} />
             <Route path='/project' element={<ProjectForm/>} />
+            <Route path='/oc' element={<OCform/>} />
             <Route path='/secret/quote' element={<SecretQuoteForm />} />
         </Routes>
     </BrowserRouter>

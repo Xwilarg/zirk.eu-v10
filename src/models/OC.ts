@@ -1,0 +1,48 @@
+export interface OCInfo
+{
+    name: string
+    metadata: OCMetadataInfo
+    images: OCImageInfo[]
+}
+
+interface OCMetadataInfo
+{
+    coauthors: string[]
+    gender: string
+    location: string
+    folder: string
+    description: string[]
+    history: string[]
+    personality: string[]
+    sexuality: string[]
+    height: number
+    species: string
+    orientation: string
+    media: OCMediaInfo[]
+}
+
+interface OCMediaInfo
+{
+    name: string
+    image: string
+    nsfw: boolean
+}
+
+interface OCImageInfo
+{
+    title: string
+    character: string
+    with: string[]
+    artist: string
+    date: string
+    default?: boolean
+    images: OCImageDetailInfo[]
+    type?: string
+}
+
+interface OCImageDetailInfo
+{
+    link: string
+    nsfw: boolean
+    default?: boolean
+}

@@ -137,6 +137,10 @@ a.ignore-half {
     pointer-events: none;
 }
 
+.pixel {
+    image-rendering: pixelated;
+}
+
 /* Box */
 .card {
     border: var(--border);

@@ -54,7 +54,10 @@ export default function MainForm() {
                 <Link to={getNavigationNoHook("/project", searchParams)} rel="me" className="button">Projects</Link>
                 {
                     showMore
-                    ? <Link to={getNavigationNoHook("/game", searchParams)} rel="me" className="button">Games</Link>
+                    ? <>
+                        <Link to={getNavigationNoHook("/game", searchParams)} rel="me" className="button">Games</Link>
+                        <Link to={getNavigationNoHook("/oc", searchParams)} rel="me" className="button">OCs</Link>
+                    </>
                     : <button onClick={() => setShowMore(true)}>More</button>
                 }
             </>} />
