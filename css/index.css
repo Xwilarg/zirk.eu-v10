@@ -141,6 +141,15 @@ a.ignore-half {
     image-rendering: pixelated;
 }
 
+/* Gallery */
+.gallery-img {
+    width: 30%;
+    height: 50% !important;
+}
+.card-img img {
+    max-width: 100%;
+}
+
 /* Box */
 .card {
     border: var(--border);

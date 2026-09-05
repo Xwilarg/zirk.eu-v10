@@ -12,14 +12,14 @@ interface OCMetadataInfo
     location: string
     folder: string
     description: string[]
-    history: string[]
-    personality: string[]
-    sexuality: string[]
+    history?: string[]
+    personality?: string[]
+    sexuality?: string[]
     height: number
     species: string
     orientation: string
     media: OCMediaInfo[]
-    power: string
+    power?: string
 }
 
 interface OCMediaInfo
@@ -35,10 +35,11 @@ interface OCImageInfo
     character: string
     with: string[]
     artist: string
-    date: string
+    date: string | null
     default?: boolean
     images: OCImageDetailInfo[]
     type?: string
+    hide?: boolean
 }
 
 interface OCImageDetailInfo
