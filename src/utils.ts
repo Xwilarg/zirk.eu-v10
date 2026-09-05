@@ -4,6 +4,10 @@ export function randInt(max: number): number {
     return Math.floor(Math.random() * max);
 }
 
+export function randArrayElement(arr: any[]) {
+    return arr[randInt(arr.length)];
+}
+
 export function isNsfw(): NsfwStatus {
     const [searchParams] = useSearchParams();
 

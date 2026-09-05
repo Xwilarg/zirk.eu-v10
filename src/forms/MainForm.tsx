@@ -1,7 +1,7 @@
 import { type ReactElement, useEffect, useState } from "react";
 import QuoteComponent from "../components/QuoteComponent";
 import { Link, useSearchParams } from "react-router";
-import { getNavigationNoHook, randInt } from "../utils";
+import { getNavigationNoHook, isNsfw, randArrayElement, randInt } from "../utils";
 import GenericBox from "../boxes/GenericBox";
 import sheepData from "../../data/json/sheep.json"
 import ImageModalForm from "../components/modal/ImageModalForm";
@@ -12,6 +12,8 @@ export default function MainForm() {
     const [showMore, setShowMore] = useState(false);
     const [showSheep, setShowSheep] = useState(false);
     const [preview, setPreview] = useState<string | null>(null);
+
+    const nsfw = isNsfw();
 
     return <div>
         <QuoteComponent />
@@ -61,13 +63,21 @@ export default function MainForm() {
                     : <button onClick={() => setShowMore(true)}>More</button>
                 }
             </>} />
-            <GenericBox name="Gamejam" nsfw={false} image={`/data/img/recap/Gamejam-0${randInt(3) + 1}.png`} buttons={[{label: "See more", type: "Link", labelType: "Text", color: "Primary", link: "/gamejam" }]} />
-            <GenericBox name="Projects" nsfw={false}text="TODO" buttons={[{label: "See more", type: "Link", labelType: "Text", color: "Primary", link: "/project" }]} />
-            <GenericBox name="Katsis" nsfw={false} image={`/data/img/recap/Katsis-0${randInt(3) + 1}.png`} buttons={[]} />
+            <GenericBox name="Gamejam" nsfw={false}
+                image={`/data/img/recap/${randArrayElement(nsfw === "SFW" ? [ "Gamejam-01.png", "Gamejam-02.png", "Gamejam-03.png" ] : [ "Gamejam-01.png", "Gamejam-02.png", "Gamejam-03-NSFW.png" ])}`}
+                buttons={[{label: "See more", type: "Link", labelType: "Text", color: "Primary", link: "/gamejam" }]}
+            />
+            <GenericBox name="Projects" nsfw={false}
+                image={`/data/img/projects/${randArrayElement([ "Intranet-01.png", "GameGuesser-01.png", "Shika-01.png" ])}`}
+                buttons={[{label: "See more", type: "Link", labelType: "Text", color: "Primary", link: "/project" }]}
+            />
+            <GenericBox name="Katsis" nsfw={false}
+                image={`/data/img/recap/${randArrayElement(nsfw === "SFW" ? [ "Katsis-01.png", "Katsis-02.png", "Katsis-03.png" ] : [ "Katsis-01-NSFW.png", "Katsis-02.png", "Katsis-03-NSFW.png" ])}`}
+            />
         </div>
         {
             preview !== null ?
-            <ImageModalForm image={preview} unsetImage={setPreview} />
+            <ImageModalForm image={preview} nsfw={true} unsetImage={setPreview} />
             : <></>
         }
     </div>
