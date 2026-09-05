@@ -19,6 +19,7 @@ interface OCMetadataInfo
     species: string
     orientation: string
     media: OCMediaInfo[]
+    power: string
 }
 
 interface OCMediaInfo
