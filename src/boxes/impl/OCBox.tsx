@@ -34,6 +34,14 @@ export default function OCBox({ item, setPreview }: OCItemFormProps)
             labelType: "GoogleIcon",
             type: "Custom",
             action: () => { setTabShown(x => x === 0 ? 2 : 0) }
+        },
+        {
+            color: "Default",
+            label: "joystick",
+            labelType: "GoogleIcon",
+            type: "Custom",
+            action: () => { setTabShown(x => x === 0 ? 3 : 0) },
+            disabled: item.metadata.media.length === 0
         }
     ];
     
@@ -79,6 +87,28 @@ export default function OCBox({ item, setPreview }: OCItemFormProps)
                         return <div className="card-img gallery-img">
                             <img src={`/data/previews/ocs/${item.metadata.folder}/${def.link}`}
                             onClick={() => setPreview(x.images.filter(x => nsfw !== "FullSFW" || !x.nsfw).map(x => ({ image: `/data/img/ocs/${item.metadata.folder}/${x.link}`, nsfw: x.nsfw })))} />
+                        </div>
+                    })
+                }
+            </div>}
+            buttons={buttons}
+        ></GenericBox>
+    }
+    if (tabShown === 3) {
+        return <GenericBox key={item.name} name={item.name} nsfw={false}
+            custom={<div className="is-flex flex-center-hor">
+                {
+                    item.metadata.media.filter(x => nsfw !== "FullSFW" || !x.nsfw)
+                    .map(x => {
+                        const isBlurry = nsfw === "SFW" && x.nsfw;
+
+                        if (isBlurry) {
+                            return <div className="card-img gallery-img">
+                                <img src={x.image} className="blur" />
+                            </div>
+                        }
+                        return <div className="card-img gallery-img">
+                            <img src={x.image} />
                         </div>
                     })
                 }

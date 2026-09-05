@@ -44,7 +44,7 @@ export default function GenericBox({ name, text, image, icons, custom, nsfw, but
             }
             else if (b.type === "Custom")
             {
-                btnHtml.push(<button key={`btn-${b.label}`} onClick={b.action} className={b.color === "Primary" ? "primary" : ""}>{label}</button>)
+                btnHtml.push(<button disabled={b.disabled} key={`btn-${b.label}`} onClick={b.action} className={b.color === "Primary" ? "primary" : ""}>{label}</button>)
             }
         }
     }
