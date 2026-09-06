@@ -25,17 +25,14 @@ export default function MainForm() {
             <GenericBox name="Sketch" nsfw={false} custom={ <SketchForm isOn={false} loadedGame={null} buttons={[]} isFullscreen={false} onLoad={null} /> } />
             <GenericBox name="Intro" nsfw={false} custom={<div>
                 <h3>Welcome on <span className="gradient-highlight">my amazing website</span>, I am Zirk, a game and software developer</h3>
-                <br/>
                 I am probably mostly known for <span className="katsis-highlight">Katsis</span> (which I co-created with Fractal) and <Link to={getNavigationNoHook("/gamejam", searchParams)}>participating at gamejams</Link><br/>
                 <br/>
-                I overall like to work on lot of different projects, this website being on of them!<br/>
-                It's still slowly being remade from the previous iteration but feel free to explore around!<br/>
+                I overall like to work on lot of different projects, this website being on of them, so feel free to look around!<br/>
                 <br/>
-                And if you have any question or so, feel free to contact me on <a href="mailto:xwilarg@protonmail.com">xwilarg@protonmail.com</a> or on Discord (zirk)<br/>
+                Still there? then why not contributing to my sheep collection, please draw me one and send it to me!<br/>
+                <a className="ignore" onClick={_ => setShowSheep(x => !x)}>You can also click here to see what I currently have</a><br/>
                 <br/>
-                <br/>
-                <br/>
-                If you scrolled down there, why not contributing to my <a onClick={_ => setShowSheep(x => !x)}>sheep collection</a>?
+                <small>Contact: Discord (zirk) or by mail (<a href="mailto:xwilarg@protonmail.com">xwilarg@protonmail.com</a>)</small>
             </div>} />
             {
                 showSheep ?
