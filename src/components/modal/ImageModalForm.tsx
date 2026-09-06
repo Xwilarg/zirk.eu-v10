@@ -3,11 +3,10 @@ import { isNsfw } from "../../utils";
 
 interface ImageModalFormProps {
     image: string | null;
-    nsfw: boolean
     unsetImage: React.Dispatch<React.SetStateAction<string | null>>
 }
 
-export default function ImageModalForm({ image, unsetImage, nsfw }: ImageModalFormProps) {
+export default function ImageModalForm({ image, unsetImage }: ImageModalFormProps) {
     useEffect(() => {
         window.addEventListener("mousedown", (e) => { if (e.button === 0) unsetImage(null) })
         window.addEventListener("scroll", () => unsetImage(null))
@@ -21,7 +20,7 @@ export default function ImageModalForm({ image, unsetImage, nsfw }: ImageModalFo
 
     return (
         <div className='modal is-flex flex-center-hor'>
-            <img className={nsfw && pageNsfw === "SFW" ? "blur" :""} src={image} />
+            <img src={image} />
         </div>
     )
 }
