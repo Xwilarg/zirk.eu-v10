@@ -84,6 +84,12 @@ export default function OCBox({ item, setPreview }: OCItemFormProps)
                                 <img src={`/data/previews/ocs/${item.metadata.folder}/${def.link}`} className="blur" />
                             </div>
                         }
+                        if (def.link.endsWith("mp4")) {
+                            return <div className="card-img gallery-img">
+                                <video src={`/data/previews/ocs/${item.metadata.folder}/${def.link}`}
+                                onClick={() => setPreview(x.images.filter(x => nsfw !== "FullSFW" || !x.nsfw).map(x => ({ image: `/data/img/ocs/${item.metadata.folder}/${x.link}`, nsfw: x.nsfw })))} />
+                            </div>
+                        }
                         return <div className="card-img gallery-img">
                             <img src={`/data/previews/ocs/${item.metadata.folder}/${def.link}`}
                             onClick={() => setPreview(x.images.filter(x => nsfw !== "FullSFW" || !x.nsfw).map(x => ({ image: `/data/img/ocs/${item.metadata.folder}/${x.link}`, nsfw: x.nsfw })))} />

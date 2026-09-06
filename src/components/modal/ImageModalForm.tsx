@@ -16,8 +16,6 @@ export default function ImageModalForm({ image, unsetImage }: ImageModalFormProp
         return <></>
     }
 
-    const pageNsfw = isNsfw();
-
     return (
         <div className='modal is-flex flex-center-hor'>
             <img src={image} />

@@ -25,7 +25,11 @@ export default function ImageGroupModalForm({ images, unsetImage }: ImageGroupMo
 
     return (
         <div className='box modal is-flex flex-center-hor modal-scroll'>
-            {images.map(image => <img key={image.image} className={image.nsfw && pageNsfw === "SFW" ? "blur" : ""} src={image.image} />)}
+            {images.map(image =>
+                image.image.endsWith(".mp4")
+                ? <video key={image.image} className={image.nsfw && pageNsfw === "SFW" ? "blur" : ""} src={image.image} autoPlay loop muted />
+                : <img key={image.image} className={image.nsfw && pageNsfw === "SFW" ? "blur" : ""} src={image.image} />
+            )}
         </div>
     )
 }
