@@ -77,7 +77,7 @@ export default function MainForm() {
         </div>
         {
             preview !== null ?
-            <ImageModalForm image={preview} nsfw={true} unsetImage={setPreview} />
+            <ImageModalForm image={preview} nsfw={false} unsetImage={setPreview} />
             : <></>
         }
     </div>
